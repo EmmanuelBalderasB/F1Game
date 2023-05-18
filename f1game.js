@@ -206,7 +206,12 @@ const season = numOfRaces => {
         let results = getPlaceWinner();
         //console.log(`Race number: ${i}. Winner is ${results[0]}`);
         winners.push(results[0]);
-        podium23.push([results[1], results[3]]);
+        podium23.push([results[1], results[2], results[3], results[4], results[5], results[6], results[7], results[8], results[9]]);
+        /* for (let i = 1; i < 10; i++) {
+            //console.log(i);
+            podium23.push([results[i]]);
+        } */
+        
     }
     //console.log(podium23);
     return [winners, podium23];
@@ -234,12 +239,36 @@ const standings = resultArr => {
             /* console.log(individualStandings[i]);
             console.log(podium.includes(index.name)) */
             /* console.log(podium[0], podium[1], 'index:' ,index.name) */
+            console.log(podium[2])
             if (podium.includes(index.name)) {
                 if (podium[0] === index.name) {
                     index.points += 18;
+                    break;
                 } else if (podium[1] === index.name) {
                     index.points += 15;
-                    
+                    break;
+                } else if (podium[2] === index.name) {
+                    index.points += 12;
+                    console.log(podium[2], index.name)
+                    break;
+                } else if (podium[3] === index.name) {
+                    index.points += 10;
+                    break;
+                } else if (podium[4] === index.name) {
+                    index.points += 8;
+                    break;
+                } else if (podium[5] === index.name) {
+                    index.points += 6;
+                    break;
+                } else if (podium[6] === index.name) {
+                    index.points += 4;
+                    break;
+                } else if (podium[7] === index.name) {
+                    index.points += 2;
+                    break;
+                } else if (podium[8] === index.name) {
+                    index.points += 1;
+                    break;
                 } else {
                     break;
                 }
