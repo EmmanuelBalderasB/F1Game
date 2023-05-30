@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+}
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    background-color: var(--bg-color);
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+:root {
+    --card-bg-color: rgba(239, 239, 239, 0.83);
+    --bg-color: rgb(247, 244, 241);
+    --header-bg: rgb(21, 21, 30);
+    --nav-bg: rgb(56, 56, 63);
+    --f1-red: rgb(252, 15, 23);
+}
+
+.card-container {
+    background-color: var(--card-bg-color);
+    width: fit-content;
+    padding: 1rem;
+}
+
+/* .card-container li{
+} */

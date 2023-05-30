@@ -287,3 +287,15 @@ let sortedWinnersArray = result.sort((a, b) => {
 
 console.log(sortedWinnersArray);
 
+//DOM Manipulation
+
+//Declarations
+const resultsList = document.getElementById('results-list');
+
+for (const driver of sortedWinnersArray) {
+    let driverLi = document.createElement('li');
+    driverLi.id = driver.name;
+    driverLi.className = 'results-list-li';
+    driverLi.innerText = `${driver.name}: ${driver.points}`
+    resultsList.appendChild(driverLi);
+}
