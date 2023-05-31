@@ -94,13 +94,13 @@ let haas = new Team('MoneyGram Haas F1 Team', 'Ferrari', [], 0, 0, 0);
 let williams = new Team('Williams Racing', 'Mercedes', [], 0, 9, 7);
 
 //Driver Declaration
-let lewis = new Driver('Lewis Hamilton', 103, 7, 44, 314, mercedes);
+let lewis = new Driver('Lewis Hamilton', /* 103 */1, 7, 44, 314, mercedes);
 let russell = new Driver('George Russell', 1, 0, 63, 86, mercedes);
 let gasly = new Driver('Pierre Gasly', 1, 0, 10, 112, alpine);
 let ocon = new Driver('Esteban Ocon', 1, 0, 31, 115, alpine);
-let bottas = new Driver('Valteri Bottas', 10, 0, 77, 204, alfaRomeo);
+let bottas = new Driver('Valteri Bottas', /* 10 */1, 0, 77, 204, alfaRomeo);
 let zhou = new Driver('Zhou Guanyu', 0, 0, 24, 26, alfaRomeo);
-let leclerc = new Driver('Charles Leclerc', 5, 0, 16, 107, ferrari);
+let leclerc = new Driver('Charles Leclerc', /* 5 */1, 0, 16, 107, ferrari);
 let sainz = new Driver('Carlos Sainz', 1, 0, 55, 167, ferrari);
 let sargeant = new Driver('Logan Sargeant', 0, 0, 2, 4, williams);
 let albon = new Driver('Alex Albon', 0, 0, 23, 63, williams);
@@ -109,11 +109,11 @@ let devries = new Driver('Nyck De Vries', 0, 0, 45, 5, alphaTauri);
 let norris = new Driver('Lando Norris', 0, 0, 4, 86, mclaren);
 let piastri = new Driver('Oscar Piastri', 0, 0, 81, 4, mclaren);
 let stroll = new Driver('Lance Stroll', 0, 0, 18, 126, astonMartin);
-let alonso = new Driver('Fernando Alonso', 32, 2, 14, 362, astonMartin);
+let alonso = new Driver('Fernando Alonso', /* 32 */1, 2, 14, 362, astonMartin);
 let magnussen = new Driver('Kevin Magnussen', 0, 0, 20, 146, haas);
 let hulkenberg = new Driver('Nico Hulkenberg', 0, 0, 27, 188, haas);
-let perez = new Driver('Sergio Perez', 6, 0, 11, 240, redbull);
-let verstappen = new Driver('Max Verstappen', 37, 2, 1, 167, redbull);
+let perez = new Driver('Sergio Perez', /* 6 */1, 0, 11, 240, redbull);
+let verstappen = new Driver('Max Verstappen', /* 37 */1, 2, 1, 167, redbull);
 
 let driverArray = [lewis, russell, gasly, ocon, bottas, zhou, leclerc, sainz, sargeant, albon, tsunoda, devries, norris, piastri, stroll, alonso, magnussen, hulkenberg, perez, verstappen];
 
@@ -211,7 +211,6 @@ const start = (numOfRaces) => {
     for (const winner of winnersArr) {
         for (let i = 0; i < individualStandings.length; i++) {
             let index = individualStandings[i];
-            //console.log(individualStandings[i]);
             if (winner === index.name) {
                 index.points += 25;
                 break;
@@ -221,10 +220,6 @@ const start = (numOfRaces) => {
     for (const podium of podiumArr) {
         for (let i = 0; i < individualStandings.length; i++) {
             let index = individualStandings[i];
-            /* console.log(individualStandings[i]);
-            console.log(podium.includes(index.name))
-             console.log(podium[0], podium[1], 'index:' ,index.name)
-            console.log(podium[2]) */
             if (podium.includes(index.name)) {
                 if (podium[0] === index.name) {
                     index.points += 18;
@@ -287,6 +282,7 @@ const startCard = document.getElementById('start-card');
 const backBtn = document.getElementById('back-button');
 const againBtn = document.getElementById('again-button');
 
+//Logic
 let results = start(23)
 const fillTableNames = () => {
     let trArray = [];
@@ -295,7 +291,6 @@ const fillTableNames = () => {
         driverTr.id = driver.name;
         driverTr.className = 'results-list-tr';
         driverTr.innerText = `${driver.name}`
-        //theadNames.appendChild(driverTr);
         trArray.push(driverTr);
     }
     return trArray;
@@ -333,8 +328,6 @@ const showAgain = (e) => {
     }
     results = start(23)
     e.preventDefault();
-    let oldNames = theadNames.childNodes;
-    let oldPoints = theadPoints.childNodes;
     let newNames = fillTableNames();
     let newPoints = fillTablePoints(); 
     theadNames.replaceChildren();
@@ -358,13 +351,12 @@ const showAgain = (e) => {
     pointsTr.append(th2);
     theadNames.insertBefore(nameTr, theadNames.firstChild)
     theadPoints.insertBefore(pointsTr, theadPoints.firstChild)
-    /* console.log(names)
-    console.log(points) */
 }
 
 const back = (e) => {
     startCard.style.display = 'block';
     resultCard.style.display = 'none';
+    window.location.reload();
 }
 startBtn.onclick = showResults;
 againBtn.onclick = showAgain;
