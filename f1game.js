@@ -123,104 +123,89 @@ driverArray.forEach(driver => {
     individualStandings.push({name: driver._name, points: 0});
 });
 
-// This function takes in a team and a driver and returns the driver's win rate as a percentage.
-// If the win rate is 0, the function returns 1 instead.
-const getFixedRate = (team, driver) => {
-    for (const drivr of team.drivers) {
-        if (drivr === driver) {
-            if (drivr._winRate === 0) {
-                return 1;
-            } else {
-                    // Calculate the win rate as a percentage with 2 decimal places, then multiply by 100 to convert to a whole number.
-                return drivr._winRate.toFixed(2) * 100;
+const start = (numOfRaces) => { 
+    //This function takes in a team and a driver and returns the driver's win rate as a percentage.
+    // If the win rate is 0, the function returns 1 instead.
+    const getFixedRate = (team, driver) => {
+        for (const drivr of team.drivers) {
+            if (drivr === driver) {
+                if (drivr._winRate === 0) {
+                    return 1;
+                } else {
+                        // Calculate the win rate as a percentage with 2 decimal places, then multiply by 100 to convert to a whole number.
+                    return drivr._winRate.toFixed(2) * 100;
+                }
             }
         }
     }
-}
 
-// This function calculates the total odds for each driver in the driverArray.
-// It calls getFixedRate() on each driver to get their win rate as a percentage.
-// If the win rate is 0, the function sets the value to 1 instead.
-// It returns an array containing the total odds and an array of individual odds for each driver.
-const getTotalOdds = () => {
-    let total = '';
-    let individual = [];
-    /* driverObjects = []; */
-    for (const driver of driverArray) {
+    // This function calculates the total odds for each driver in the driverArray.
+    // It calls getFixedRate() on each driver to get their win rate as a percentage.
+    // If the win rate is 0, the function sets the value to 1 instead.
+    // It returns an array containing the total odds and an array of individual odds for each driver.
+    const getTotalOdds = () => {
+        let total = '';
+        let individual = [];
+        /* driverObjects = []; */
+        for (const driver of driverArray) {
         let value = getFixedRate(driver._team, driver);
         if (value === 0) {
             value = 1;
         }
         individual.push({odds: getFixedRate(driver._team, driver), driver: driver.name, driverObject: driver});
         total = +total + +value;
-    }
-    return [total, individual];
-}
-
-// This function determines the winner of a race by generating a grid of 20 drivers.
-// It calls getTotalOdds() to get the total odds and individual odds for each driver.
-// It then randomly selects drivers based on their odds until the grid is filled with 20 drivers.
-// The function returns an array containing the names of the 20 drivers in the order they finished.
-const getPlaceWinner = () => {
-    let grid = [];
-    let grid2 = [];
-    let [totalOdds, totalIndividuals] = getTotalOdds();
-    /* let totalOdds = totalInfo[0];
-    let totalIndividuals = totalInfo[1] */
-    while (grid.length < 20) {
-        for (const driver of totalIndividuals) {
-            let chance = Math.floor(Math.random() * totalOdds)
-            if (chance <= driver.odds) {
-                /* let index = totalIndividuals.indexOf(driver);
-                console.log({index: index}, totalIndividuals); */
-                if (grid.includes(driver.driver)) {
-                    continue;
-                } else {
-                    grid.push(driver.driver);
-                    grid2.push(driver.driverObject);
-                }
-            }   
         }
+        return [total, individual];
     }
-    //console.log(grid2[0]._wins, grid2[0]._totalStarts, grid2[0]._winRate)
-    for (let i = 0; i < grid.length; i++) {
-       if (grid[0] === grid2[0].name) {
-            /* console.log('Winner is ' + grid[0] + ' from ' + grid2[0].team.name); */
-            // console.log({winner: winner, winnerTeam: winnerTeam});
-            let winner = grid2[0];
-            let winnerTeam = winner.team;
-            winner.won();
-            /* break; */
-       } else {
-            grid2[i].notWon();
-       }
+
+    // This function determines the winner of a race by generating a grid of 20 drivers.
+    // It calls getTotalOdds() to get the total odds and individual odds for each driver.
+    // It then randomly selects drivers based on their odds until the grid is filled with 20 drivers.
+    // The function returns an array containing the names of the 20 drivers in the order they finished.
+    const getPlaceWinner = () => {
+        let grid = [];
+        let grid2 = [];
+        let [totalOdds, totalIndividuals] = getTotalOdds();
+        while (grid.length < 20) {
+            for (const driver of totalIndividuals) {
+                let chance = Math.floor(Math.random() * totalOdds)
+                    if (chance <= driver.odds) {
+                        if (grid.includes(driver.driver)) {
+                            continue;
+                        } else {
+                            grid.push(driver.driver);
+                            grid2.push(driver.driverObject);
+                        }
+                    }   
+            }
+        }
+        for (let i = 0; i < grid.length; i++) {
+            if (grid[0] === grid2[0].name) {
+                let winner = grid2[0];
+                let winnerTeam = winner.team;
+                winner.won();
+            } else {
+                grid2[i].notWon();
+            }
+        }
+        return grid;
     }
-    //console.log(grid2[0]._wins, grid2[0]._totalStarts, grid2[0]._winRate)
-    return grid;
-}
 
-const season = numOfRaces => {
-    let winners = [];
-    let podium23 = [];
-    for (let i = 1; i <= numOfRaces; i++) {
-        let results = getPlaceWinner();
-        //console.log(`Race number: ${i}. Winner is ${results[0]}`);
-        winners.push(results[0]);
-        podium23.push([results[1], results[2], results[3], results[4], results[5], results[6], results[7], results[8], results[9]]);
-        /* for (let i = 1; i < 10; i++) {
-            //console.log(i);
-            podium23.push([results[i]]);
-        } */
-        
+    const season = num => {
+        let winners = [];
+        let podium23 = [];
+        for (let i = 1; i <= num; i++) {
+            let results = getPlaceWinner();
+            winners.push(results[0]);
+            podium23.push([results[1], results[2], results[3], results[4], results[5], results[6],  results[7], results[8], results[9]]);
+        }
+        return [winners, podium23];
     }
-    //console.log(podium23);
-    return [winners, podium23];
-}
 
-let raceWinners = season(23);
+    let raceWinners = season(numOfRaces);
 
 
-const standings = resultArr => {
+    const standings = resultArr => {    
     let winnersArr = resultArr[0];
     let podiumArr = resultArr[1];
     for (const winner of winnersArr) {
@@ -276,15 +261,19 @@ const standings = resultArr => {
         }
     }
     return individualStandings;
+    }
+
+    let result = standings(raceWinners);
+
+    let sortedWinnersArray = result.sort((a, b) => {    
+        return b.points - a.points;
+    });
+        return sortedWinnersArray;
 }
 
-let result = standings(raceWinners);
 
-let sortedWinnersArray = result.sort((a, b) => {
-    return b.points - a.points;
-});
 
-console.log(sortedWinnersArray);
+//console.log(sortedWinnersArray);
 
 //DOM Manipulation
 
@@ -298,38 +287,85 @@ const startCard = document.getElementById('start-card');
 const backBtn = document.getElementById('back-button');
 const againBtn = document.getElementById('again-button');
 
+let results = start(23)
 const fillTableNames = () => {
-    for (const driver of sortedWinnersArray) {
+    let trArray = [];
+    for (const driver of results) {
         let driverTr = document.createElement('tr');
         driverTr.id = driver.name;
         driverTr.className = 'results-list-tr';
         driverTr.innerText = `${driver.name}`
-        theadNames.appendChild(driverTr);
+        //theadNames.appendChild(driverTr);
+        trArray.push(driverTr);
     }
+    return trArray;
 }
 
 const fillTablePoints = () => {
-    for (const driver of sortedWinnersArray) {
+    let trArray = [];
+    for (const driver of results) {
         let driverTr = document.createElement('tr');
         driverTr.id = `${driver.name}-points`;
         driverTr.className = 'results-list-tr';
         driverTr.innerText = `${driver.points}`
-        theadPoints.appendChild(driverTr);
+        trArray.push(driverTr);
     }
+    return trArray
 }
 const showResults = (e) => {
     e.preventDefault();
-    fillTableNames();
-    fillTablePoints();
+    let names = fillTableNames();
+    let points = fillTablePoints();
+    for (const item of names) {
+        theadNames.appendChild(item);
+    }
+    for (const item of points) {
+        theadPoints.appendChild(item);
+    }
     startCard.style.display = 'none';
     resultCard.style.display = 'block';
 }
 
 const showAgain = (e) => {
+    for (const driver of driverArray) {
+        driver.wins = 0;
+        driver.points = 0;
+    }
+    results = start(23)
     e.preventDefault();
-    theadNames.replaceChildren(fillTableNames);
-    theadPoints.replaceChildren(fillTablePoints);
+    let oldNames = theadNames.childNodes;
+    let oldPoints = theadPoints.childNodes;
+    let newNames = fillTableNames();
+    let newPoints = fillTablePoints(); 
+    theadNames.replaceChildren();
+    theadPoints.replaceChildren();
+        for (let i = 0; i < newNames.length; i++) {
+            theadNames.append(newNames[i]);
+        }
+        for (let i = 0; i < newPoints.length; i++) {
+            theadPoints.append(newPoints[i]);
+        }
+   
+    let th1 = document.createElement('th');
+    th1.className = 'th';
+    th1.innerText = 'Drivers';
+    let nameTr = document.createElement('tr')
+    nameTr.append(th1);
+    let th2 = document.createElement('th2');
+    th2.className = 'th';
+    th2.innerText = 'Points';
+    let pointsTr = document.createElement('tr')
+    pointsTr.append(th2);
+    theadNames.insertBefore(nameTr, theadNames.firstChild)
+    theadPoints.insertBefore(pointsTr, theadPoints.firstChild)
+    /* console.log(names)
+    console.log(points) */
 }
 
+const back = (e) => {
+    startCard.style.display = 'block';
+    resultCard.style.display = 'none';
+}
 startBtn.onclick = showResults;
-againBtn.onclick = showResults;
+againBtn.onclick = showAgain;
+backBtn.onclick = back;
