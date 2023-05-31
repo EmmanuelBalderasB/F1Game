@@ -4,7 +4,7 @@
 
 body {
     font-family: 'JetBrains Mono', monospace;
-    background-color: var(--bg-color);
+    background-color: white;
     height: 800px;
     display: flex;
     justify-content: center;
@@ -19,12 +19,91 @@ body {
     --nav-bg: rgb(56, 56, 63);
     --f1-red: rgb(252, 15, 23);
 }
+.card-container#result-card {
+    display: none;
+}
 
+.card-container#start {
+    display: block;
+    text-align: center;
+    align-items: center;
+}
 .card-container {
     background-color: var(--card-bg-color);
     width: fit-content;
-    padding: 1rem;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 2px solid var(--f1-red);
 }
 
-/* .card-container li{
-} */
+.card-container .results .table {
+    display: flex;
+}
+.card-container .results .table .th {
+    text-align: left;
+    width: 50%;
+}
+.card-container .results .table .thead {
+    width: 10rem;
+
+}
+
+.button#start-button {
+    background-color: var(--f1-red);
+    border: 2px solid var(--f1-red);
+    border-radius: 15px;
+    color: white;
+    padding: .7rem;
+    font-size: 20px;
+    font-family: 'JetBrains Mono', 'monospace';
+
+}
+.button#start-button:hover {
+    cursor: pointer;
+    border: 2px solid var(--f1-red);
+    background-color: var(--bg-color);
+    color: var(--f1-red);
+    transition: ease-in-out .3s;
+}
+
+.button#back-button,
+.button#again-button {
+    background-color: var(--f1-red);
+    border: 2px solid var(--f1-red);
+    border-radius: 15px;
+    color: white;
+    padding: .7rem;
+    font-size: 12.5px;
+    font-family: 'JetBrains Mono', 'monospace';
+}
+
+.button#back-button:hover,
+.button#again-button:hover {
+    cursor: pointer;
+    border: 2px solid var(--f1-red);
+    background-color: var(--bg-color);
+    color: var(--f1-red);
+    transition: ease-in-out .3s;
+}
+
+.button-right {
+    text-align: right;
+}
+
+.buttons {
+    margin-top: .5rem;
+    width: 100%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+.button-container {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.button-left,
+.button-right {
+    width: 50%;
+}

@@ -8,14 +8,35 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-        <div class="card-container">
-            <h2>Championship Results</h2>
-            <div class="results">
-                <ol class="ul" id="results-list">
-                    
-                </ol>
-            </div>    
+    <div class="card-container" id="result-card">
+        <h2>Championship Results</h2>
+        <div class="results">
+            <table class="table" id="results-list">
+                <thead class="thead" id="thead-names">
+                    <th class="th">Drivers</th>
+                </thead>
+                <thead class="thead" id="thead-points">
+                    <th class="th">Points</th>
+                </thead>
+            </table>
+        </div>    
+        <div class="buttons">
+            <div class="button-left">
+                <button type="submit" id="back-button" class="button" id="back-button">Back</button>
+            </div>
+            <div class="button-right">
+                <button type="submit" class="button" id="again-button">Again</button>
+            </div>
+        </div>
     </div>
-    <script src="./f1game.js"></script>
+    <div class="card-container" id="start-card">
+        <div class="title">
+            <h1>Championship Simulator</h1>
+        </div>
+        <div class="button-container">
+            <button type="submit" class="button" id="start-button">START</button>
+        </div>
+    </div>
+    <script src="./f1game.js" async></script>
 </body>
 </html>

@@ -237,9 +237,9 @@ const standings = resultArr => {
         for (let i = 0; i < individualStandings.length; i++) {
             let index = individualStandings[i];
             /* console.log(individualStandings[i]);
-            console.log(podium.includes(index.name)) */
-            /* console.log(podium[0], podium[1], 'index:' ,index.name) */
-            console.log(podium[2])
+            console.log(podium.includes(index.name))
+             console.log(podium[0], podium[1], 'index:' ,index.name)
+            console.log(podium[2]) */
             if (podium.includes(index.name)) {
                 if (podium[0] === index.name) {
                     index.points += 18;
@@ -249,7 +249,7 @@ const standings = resultArr => {
                     break;
                 } else if (podium[2] === index.name) {
                     index.points += 12;
-                    console.log(podium[2], index.name)
+                    //console.log(podium[2], index.name)
                     break;
                 } else if (podium[3] === index.name) {
                     index.points += 10;
@@ -275,7 +275,6 @@ const standings = resultArr => {
             } 
         }
     }
-
     return individualStandings;
 }
 
@@ -291,11 +290,46 @@ console.log(sortedWinnersArray);
 
 //Declarations
 const resultsList = document.getElementById('results-list');
+const theadNames = document.getElementById('thead-names');
+const theadPoints = document.getElementById('thead-points');
+const startBtn = document.getElementById('start-button');
+const resultCard = document.getElementById('result-card');
+const startCard = document.getElementById('start-card');
+const backBtn = document.getElementById('back-button');
+const againBtn = document.getElementById('again-button');
 
-for (const driver of sortedWinnersArray) {
-    let driverLi = document.createElement('li');
-    driverLi.id = driver.name;
-    driverLi.className = 'results-list-li';
-    driverLi.innerText = `${driver.name}: ${driver.points}`
-    resultsList.appendChild(driverLi);
+const fillTableNames = () => {
+    for (const driver of sortedWinnersArray) {
+        let driverTr = document.createElement('tr');
+        driverTr.id = driver.name;
+        driverTr.className = 'results-list-tr';
+        driverTr.innerText = `${driver.name}`
+        theadNames.appendChild(driverTr);
+    }
 }
+
+const fillTablePoints = () => {
+    for (const driver of sortedWinnersArray) {
+        let driverTr = document.createElement('tr');
+        driverTr.id = `${driver.name}-points`;
+        driverTr.className = 'results-list-tr';
+        driverTr.innerText = `${driver.points}`
+        theadPoints.appendChild(driverTr);
+    }
+}
+const showResults = (e) => {
+    e.preventDefault();
+    fillTableNames();
+    fillTablePoints();
+    startCard.style.display = 'none';
+    resultCard.style.display = 'block';
+}
+
+const showAgain = (e) => {
+    e.preventDefault();
+    theadNames.replaceChildren(fillTableNames);
+    theadPoints.replaceChildren(fillTablePoints);
+}
+
+startBtn.onclick = showResults;
+againBtn.onclick = showResults;
