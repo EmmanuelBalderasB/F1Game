@@ -20,7 +20,7 @@ class Team {
 // The constructor method calculates the win rate as the ratio of wins to total starts.
 // If a team is passed in, the driver is added to the team's drivers array.
 class Driver {
-    constructor(name, wins, wdc, number, totalStarts, team) {
+    constructor(name, wins, wdc, number, totalStarts, team, nationality) {
         this._name = name;
         this._wins = wins;
         this._wdc = wdc;
@@ -29,6 +29,7 @@ class Driver {
         this._totalStarts = totalStarts;
         this._winRate = wins / totalStarts;
         this._points = 0;
+        this._nationality = nationality;
         if (team) { 
             team.drivers.push(this);
         }
@@ -57,7 +58,9 @@ class Driver {
     get points() {
         return this._points;
     }
-
+    get nationality() {
+        return this._nationality;
+    }
     set team(team) {
         this._team = team;
     }
@@ -94,33 +97,33 @@ let haas = new Team('MoneyGram Haas F1 Team', 'Ferrari', [], 0, 0, 0);
 let williams = new Team('Williams Racing', 'Mercedes', [], 0, 9, 7);
 
 //Driver Declaration
-let lewis = new Driver('Lewis Hamilton', /* 103 */1, 7, 44, 314, mercedes);
-let russell = new Driver('George Russell', 1, 0, 63, 86, mercedes);
-let gasly = new Driver('Pierre Gasly', 1, 0, 10, 112, alpine);
-let ocon = new Driver('Esteban Ocon', 1, 0, 31, 115, alpine);
-let bottas = new Driver('Valteri Bottas', /* 10 */1, 0, 77, 204, alfaRomeo);
-let zhou = new Driver('Zhou Guanyu', 0, 0, 24, 26, alfaRomeo);
-let leclerc = new Driver('Charles Leclerc', /* 5 */1, 0, 16, 107, ferrari);
-let sainz = new Driver('Carlos Sainz', 1, 0, 55, 167, ferrari);
-let sargeant = new Driver('Logan Sargeant', 0, 0, 2, 4, williams);
-let albon = new Driver('Alex Albon', 0, 0, 23, 63, williams);
-let tsunoda = new Driver('Yuki Tsunoda', 0, 0, 22, 48, alphaTauri);
-let devries = new Driver('Nyck De Vries', 0, 0, 45, 5, alphaTauri);
-let norris = new Driver('Lando Norris', 0, 0, 4, 86, mclaren);
-let piastri = new Driver('Oscar Piastri', 0, 0, 81, 4, mclaren);
-let stroll = new Driver('Lance Stroll', 0, 0, 18, 126, astonMartin);
-let alonso = new Driver('Fernando Alonso', /* 32 */1, 2, 14, 362, astonMartin);
-let magnussen = new Driver('Kevin Magnussen', 0, 0, 20, 146, haas);
-let hulkenberg = new Driver('Nico Hulkenberg', 0, 0, 27, 188, haas);
-let perez = new Driver('Sergio Perez', /* 6 */1, 0, 11, 240, redbull);
-let verstappen = new Driver('Max Verstappen', /* 37 */1, 2, 1, 167, redbull);
+let lewis = new Driver('Lewis Hamilton', /* 103 */1, 7, 44, 314, mercedes, 'uk');
+let russell = new Driver('George Russell', 1, 0, 63, 86, mercedes, 'uk');
+let gasly = new Driver('Pierre Gasly', 1, 0, 10, 112, alpine, 'france');
+let ocon = new Driver('Esteban Ocon', 1, 0, 31, 115, alpine, 'france');
+let bottas = new Driver('Valteri Bottas', /* 10 */1, 0, 77, 204, alfaRomeo, 'finland');
+let zhou = new Driver('Zhou Guanyu', 0, 0, 24, 26, alfaRomeo, 'china');
+let leclerc = new Driver('Charles Leclerc', /* 5 */1, 0, 16, 107, ferrari, 'monaco');
+let sainz = new Driver('Carlos Sainz', 1, 0, 55, 167, ferrari, 'spain');
+let sargeant = new Driver('Logan Sargeant', 0, 0, 2, 4, williams, 'usa');
+let albon = new Driver('Alex Albon', 0, 0, 23, 63, williams, 'thailand');
+let tsunoda = new Driver('Yuki Tsunoda', 0, 0, 22, 48, alphaTauri, 'japan');
+let devries = new Driver('Nyck De Vries', 0, 0, 45, 5, alphaTauri, 'netherlands');
+let norris = new Driver('Lando Norris', 0, 0, 4, 86, mclaren, 'uk');
+let piastri = new Driver('Oscar Piastri', 0, 0, 81, 4, mclaren, 'australia');
+let stroll = new Driver('Lance Stroll', 0, 0, 18, 126, astonMartin, 'canada');
+let alonso = new Driver('Fernando Alonso', /* 32 */1, 2, 14, 362, astonMartin, 'spain');
+let magnussen = new Driver('Kevin Magnussen', 0, 0, 20, 146, haas, 'denmark');
+let hulkenberg = new Driver('Nico Hulkenberg', 0, 0, 27, 188, haas, 'germany');
+let perez = new Driver('Sergio Perez', /* 6 */1, 0, 11, 240, redbull, 'mexico');
+let verstappen = new Driver('Max Verstappen', /* 37 */1, 2, 1, 167, redbull, 'netherlands');
 
 let driverArray = [lewis, russell, gasly, ocon, bottas, zhou, leclerc, sainz, sargeant, albon, tsunoda, devries, norris, piastri, stroll, alonso, magnussen, hulkenberg, perez, verstappen];
 
 let individualStandings = [];
 
 driverArray.forEach(driver => {
-    individualStandings.push({name: driver._name, points: 0});
+    individualStandings.push({name: driver._name, points: 0, nationality: driver.nationality});
 });
 
 const start = (numOfRaces) => { 
@@ -128,7 +131,7 @@ const start = (numOfRaces) => {
     // If the win rate is 0, the function returns 1 instead.
     const getFixedRate = (team, driver) => {
         for (const drivr of team.drivers) {
-            if (drivr === driver) {
+            if (drivr === driver || drivr._winRate === 0) {
                 if (drivr._winRate === 0) {
                     return 1;
                 } else {
@@ -259,19 +262,55 @@ const start = (numOfRaces) => {
     }
 
     let result = standings(raceWinners);
-
+    console.log(result)
     let sortedWinnersArray = result.sort((a, b) => {    
         return b.points - a.points;
     });
         return sortedWinnersArray;
 }
 
+const getNationality = (nationality) => {
+    console.log(nationality)
+    switch (nationality) {
+        case 'uk':
+            return '🇬🇧';
+        case 'spain':
+            return '🇪🇸';
+        case 'canada':
+            return '🇨🇦';
+        case 'germany':
+            return '🇩🇪';
+        case 'japan':
+            return '🇯🇵';
+        case 'usa':
+            return '🇺🇸';
+        case 'thailand':
+            return '🇹🇭';
+        case 'france':
+            return '🇫🇷';
+        case 'mexico':
+            return '🇲🇽';
+        case 'australia':
+            return '🇦🇺';
+        case 'china':
+            return '🇨🇳';
+        case 'finland':
+            return '🇫🇮';
+        case 'netherlands':
+            return '🇳🇱';
+        case 'monaco':
+            return '🇲🇨';
+        case 'denmark':
+            return '🇩🇰';
+        default:
+            return -1;
+    }
+}
 
 
 //console.log(sortedWinnersArray);
 
 //DOM Manipulation
-
 //Declarations
 const resultsList = document.getElementById('results-list');
 const theadNames = document.getElementById('thead-names');
@@ -281,16 +320,26 @@ const resultCard = document.getElementById('result-card');
 const startCard = document.getElementById('start-card');
 const backBtn = document.getElementById('back-button');
 const againBtn = document.getElementById('again-button');
+const value = document.querySelector("#value");
+const input = document.querySelector("#season-length");
 
 //Logic
-let results = start(23)
+let length = '';
+value.textContent = input.value;
+input.addEventListener("input", (event) => {
+  value.textContent = event.target.value;
+})
+length = input.value;
+let results = start(length)
+console.log(results)
 const fillTableNames = () => {
     let trArray = [];
     for (const driver of results) {
+        let nationality = getNationality(driver.nationality);
         let driverTr = document.createElement('tr');
         driverTr.id = driver.name;
         driverTr.className = 'results-list-tr';
-        driverTr.innerText = `${driver.name}`
+        driverTr.innerText = `${nationality} ${driver.name}`
         trArray.push(driverTr);
     }
     return trArray;
@@ -302,7 +351,7 @@ const fillTablePoints = () => {
         let driverTr = document.createElement('tr');
         driverTr.id = `${driver.name}-points`;
         driverTr.className = 'results-list-tr';
-        driverTr.innerText = `${driver.points}`
+        driverTr.innerText = `${driver.points}`;
         trArray.push(driverTr);
     }
     return trArray
@@ -326,7 +375,10 @@ const showAgain = (e) => {
         driver.wins = 0;
         driver.points = 0;
     }
-    results = start(23)
+    for (const driver of individualStandings) {
+        driver.points = 0;
+    }
+    results = start(length)
     e.preventDefault();
     let newNames = fillTableNames();
     let newPoints = fillTablePoints(); 
@@ -358,6 +410,9 @@ const back = (e) => {
     resultCard.style.display = 'none';
     window.location.reload();
 }
+
+
+
 startBtn.onclick = showResults;
 againBtn.onclick = showAgain;
 backBtn.onclick = back;
